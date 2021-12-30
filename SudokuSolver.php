@@ -22,7 +22,17 @@ class SudokuSolver {
         return $this->sudoku;
     }
 
+    public function getSolveDuration(): int {
+        return $this->solveDuration;
+    }
+
     public function solve(): SudokuSolver {
+        if ($this->isSolved()) {
+            $this->sudokuType = SudokuType::SOLVED;
+            $this->solveDuration = 0;
+            return $this;
+        }
+
         $this->sudokuType = SudokuType::IN_SOLVE;
         $solveTimeStarted = hrtime(true);
 
@@ -30,9 +40,32 @@ class SudokuSolver {
             //Solving algorithm here
         }
 
-        $solveTimeFinished = hrtime(true);
-        $this->solveDuration = $solveTimeFinished - $solveTimeStarted;
+        if ($this->sudokuType == SudokuType::SOLVED) {
+            $solveTimeFinished = hrtime(true);
+            $this->solveDuration = $solveTimeFinished - $solveTimeStarted;
+        }
 
         return $this;
+    }
+
+    public function isSolved(): bool {
+        $values = range(1, $this->sudoku->getSize() ** 2);
+
+        foreach ($this->sudoku->getRows() as $row) {
+            sort($row);
+            if ($row != $values) return false;
+        }
+
+        foreach ($this->sudoku->getColumns() as $column) {
+            sort($column);
+            if ($column != $values) return false;
+        }
+
+        foreach ($this->sudoku->getBoxes() as $box) {
+            sort($box);
+            if ($box != $values) return false;
+        }
+
+        return true;
     }
 }
