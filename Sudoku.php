@@ -8,8 +8,14 @@ class Sudoku {
     protected int $size;
 
     public function __construct(array $grid, int $size) {
-        if ($size ** 2 != count($grid) || $size ** 2 != count(array_column($grid, 0))) {
+        if (count($grid) != $size ** 2) {
             throw new InvalidArgumentException('Grid does not have the provided size.');
+        }
+
+        foreach ($grid as $row) {
+            if (count($row) != $size ** 2) {
+                throw new InvalidArgumentException('Grid does not have the provided size.');
+            }
         }
 
         $this->grid = $grid;
@@ -33,7 +39,7 @@ class Sudoku {
             throw new InvalidArgumentException('Row is out of range.');
         }
 
-        return $this->grid[$row - 1];
+        return $this->grid[$row];
     }
 
     public function getColumns(): array {
@@ -51,7 +57,7 @@ class Sudoku {
             throw new InvalidArgumentException('Column is out of range.');
         }
 
-        return array_column($this->grid, $column - 1);
+        return array_column($this->grid, $column);
     }
 
     public function getBoxes(): array {
@@ -72,7 +78,7 @@ class Sudoku {
             throw new InvalidArgumentException('Box is out of range.');
         }
 
-        return $this->getBoxes()[$box - 1];
+        return $this->getBoxes()[$box];
     }
 
     public function getBoxFromCell(int $x, int $y): array {
@@ -88,11 +94,15 @@ class Sudoku {
     }
 
     public function getCell(int $x, int $y): int {
-        return $this->grid[$y - 1][$x - 1];
+        return $this->grid[$y][$x];
     }
 
-    public function setCell(int $x, int $y, int $value): self {
-        $this->grid[$y - 1][$x - 1] = $value;
+    public function setCell(int $x, int $y, $value): self {
+        if (!is_int($value) && !is_array($value)) {
+            throw new InvalidArgumentException('Value is neither an int nor an array.');
+        }
+
+        $this->grid[$y][$x] = $value;
         return $this;
     }
 }
