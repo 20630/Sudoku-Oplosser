@@ -1,7 +1,9 @@
 <?php
 namespace j3ltr\SudokuSolver;
 
+use RuntimeException;
 use InvalidArgumentException;
+use OutOfRangeException;
 
 class Sudoku {
     protected array $grid;
@@ -9,12 +11,12 @@ class Sudoku {
 
     public function __construct(array $grid, int $size) {
         if (count($grid) != $size ** 2) {
-            throw new InvalidArgumentException('Grid does not have the provided size.');
+            throw new RuntimeException('Grid does not have the provided size.');
         }
 
         foreach ($grid as $row) {
             if (count($row) != $size ** 2) {
-                throw new InvalidArgumentException('Grid does not have the provided size.');
+                throw new RuntimeException('Grid does not have the provided size.');
             }
         }
 
@@ -36,7 +38,7 @@ class Sudoku {
 
     public function getRow(int $row): array {
         if ($row > $this->size ** 2) {
-            throw new InvalidArgumentException('Row is out of range.');
+            throw new OutOfRangeException('Row is out of range.');
         }
 
         return $this->grid[$row];
@@ -54,7 +56,7 @@ class Sudoku {
 
     public function getColumn(int $column): array {
         if ($column > $this->size ** 2) {
-            throw new InvalidArgumentException('Column is out of range.');
+            throw new OutOfRangeException('Column is out of range.');
         }
 
         return array_column($this->grid, $column);
@@ -75,7 +77,7 @@ class Sudoku {
 
     public function getBox(int $box): array {
         if ($box > $this->size ** 2) {
-            throw new InvalidArgumentException('Box is out of range.');
+            throw new OutOfRangeException('Box is out of range.');
         }
 
         return $this->getBoxes()[$box];
@@ -83,7 +85,7 @@ class Sudoku {
 
     public function getBoxFromCell(int $x, int $y): array {
         if ($x > $this->size ** 2 || $y > $this->size ** 2) {
-            throw new InvalidArgumentException('Cell is out of range.');
+            throw new OutOfRangeException('Cell is out of range.');
         }
 
         $a = (ceil(($y + 1) / $this->getSize()) - 1) * 3;
