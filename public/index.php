@@ -159,5 +159,6 @@
         </div>
     </div>
 </div>
+<script src="assets/script.js"/>
 </body>
 </html>

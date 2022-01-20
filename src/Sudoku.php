@@ -18,10 +18,36 @@ class Sudoku {
             if (count($row) != $size ** 2) {
                 throw new RuntimeException('Grid does not have the provided size.');
             }
+            foreach ($row as $cell) {
+                if (!is_numeric($cell)) {
+                    throw new RuntimeException('Only numbers allowed.');
+                }
+            }
         }
 
         $this->grid = $grid;
         $this->size = $size;
+    }
+
+    public static function fromString(string $grid, int $size): self {
+        $grid = str_split($grid);
+
+        if (count($grid) != ($size ** 2) ** 2) {
+            throw new RuntimeException('Grid does not have the provided size.');
+        }
+
+        $values = range(0, ($size ** 2));
+        foreach ($grid as $i => $symbol) {
+            if (!in_array($symbol, $values)) {
+                throw new RuntimeException('Grid contains invalid symbols.');
+            }
+
+            $grid[$i] = (int) $symbol; //MAKE INT PLS FIX
+        }
+
+        $grid = array_chunk($grid, $size ** 2);
+
+        return new Sudoku($grid, $size);
     }
 
     public function getGrid(): array {
@@ -66,8 +92,8 @@ class Sudoku {
         $boxes = array();
         foreach ($this->getRows() as $y => $row) {
             foreach ($row as $x => $value) {
-                $a = (ceil(($y + 1) / $this->getSize()) - 1) * 3;
-                $b = ceil(($x + 1) / $this->getSize()) - 1;
+                $a = (ceil(($y + 1) / $this->size) - 1) * $this->size;
+                $b = ceil(($x + 1) / $this->size) - 1;
                 $i = $a + $b;
                 $boxes[$i][] = $value;
             }
@@ -87,9 +113,8 @@ class Sudoku {
         if ($x > $this->size ** 2 || $y > $this->size ** 2) {
             throw new OutOfRangeException('Cell is out of range.');
         }
-
-        $a = (ceil(($y + 1) / $this->getSize()) - 1) * 3;
-        $b = ceil(($x + 1) / $this->getSize()) - 1;
+        $a = (ceil(($y + 1) / $this->size) - 1) * $this->size;
+        $b = ceil(($x + 1) / $this->size) - 1;
         $i = $a + $b;
 
         return $this->getBox($i);
@@ -106,5 +131,17 @@ class Sudoku {
 
         $this->grid[$y][$x] = $value;
         return $this;
+    }
+
+    public function __toString(): string {
+        $out = '';
+
+        foreach ($this->grid as $row) {
+            foreach ($row as $value) {
+                $out .= is_array($value) ? implode(', ', $value) : $value;
+            }
+        }
+
+        return $out;
     }
 }
