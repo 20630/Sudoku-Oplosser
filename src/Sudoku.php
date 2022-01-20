@@ -11,16 +11,16 @@ class Sudoku {
 
     public function __construct(array $grid, int $size) {
         if (count($grid) != $size ** 2) {
-            throw new RuntimeException('Grid does not have the provided size.');
+            throw new RuntimeException('Grid (' . count($grid) . ') does not have the provided size (' . $size ** 2 . ')');
         }
 
-        foreach ($grid as $row) {
+        foreach ($grid as $y => $row) {
             if (count($row) != $size ** 2) {
-                throw new RuntimeException('Grid does not have the provided size.');
+                throw new RuntimeException('Grid (' . count($grid) . ') does not have the provided size (' . $size ** 2 . ')');
             }
-            foreach ($row as $cell) {
+            foreach ($row as $x => $cell) {
                 if (!is_numeric($cell)) {
-                    throw new RuntimeException('Only numbers allowed.');
+                    throw new RuntimeException('Grid contains an invalid symbol (' . $cell . ') at x = ' . $x . ', y = ' . $y . ')');
                 }
             }
         }
@@ -33,16 +33,16 @@ class Sudoku {
         $grid = str_split($grid);
 
         if (count($grid) != ($size ** 2) ** 2) {
-            throw new RuntimeException('Grid does not have the provided size.');
+            throw new RuntimeException('Grid (' . count($grid) . ') does not have the provided size (' . ($size ** 2) ** 2 . ')');
         }
 
-        $values = range(0, ($size ** 2));
+        $values = range(0, $size ** 2);
         foreach ($grid as $i => $symbol) {
             if (!in_array($symbol, $values)) {
-                throw new RuntimeException('Grid contains invalid symbols.');
+                throw new RuntimeException('Grid contains an invalid symbol (' . $symbol . ') at index: ' . $i);
             }
 
-            $grid[$i] = (int) $symbol; //MAKE INT PLS FIX
+            $grid[$i] = (int) $symbol;
         }
 
         $grid = array_chunk($grid, $size ** 2);
@@ -64,7 +64,7 @@ class Sudoku {
 
     public function getRow(int $row): array {
         if ($row > $this->size ** 2) {
-            throw new OutOfRangeException('Row is out of range.');
+            throw new OutOfRangeException('Row (' . $row . ') is out of range (' . $this->size ** 2 .')');
         }
 
         return $this->grid[$row];
@@ -82,7 +82,7 @@ class Sudoku {
 
     public function getColumn(int $column): array {
         if ($column > $this->size ** 2) {
-            throw new OutOfRangeException('Column is out of range.');
+            throw new OutOfRangeException('Column (' . $column . ') is out of range (' . $this->size ** 2 .')');
         }
 
         return array_column($this->grid, $column);
@@ -103,7 +103,7 @@ class Sudoku {
 
     public function getBox(int $box): array {
         if ($box > $this->size ** 2) {
-            throw new OutOfRangeException('Box is out of range.');
+            throw new OutOfRangeException('Box (' . $box . ') is out of range (' . $this->size ** 2 .')');
         }
 
         return $this->getBoxes()[$box];
@@ -111,7 +111,7 @@ class Sudoku {
 
     public function getBoxFromCell(int $x, int $y): array {
         if ($x > $this->size ** 2 || $y > $this->size ** 2) {
-            throw new OutOfRangeException('Cell is out of range.');
+            throw new OutOfRangeException('Cell (x = ' . $x . ', y = ' . $y . ') is out of range (' . $this->size ** 2 .')');
         }
         $a = (ceil(($y + 1) / $this->size) - 1) * $this->size;
         $b = ceil(($x + 1) / $this->size) - 1;
@@ -126,7 +126,7 @@ class Sudoku {
 
     public function setCell(int $x, int $y, $value): self {
         if (!is_int($value) && !is_array($value)) {
-            throw new InvalidArgumentException('Value is neither an int nor an array.');
+            throw new InvalidArgumentException('Value (' . $value . ') is neither an int nor an array');
         }
 
         $this->grid[$y][$x] = $value;

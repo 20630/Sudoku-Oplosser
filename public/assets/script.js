@@ -7,7 +7,7 @@ const configurationHTML = $(".right").html();
 function getSudoku() {
     let sudokuString = "";
     switch ($("input[name=import]:checked").attr("id")) {
-        case 'fill-in':
+        case "fill-in":
             for (let i = 0; i < ((sudokuSize ** 2) ** 2); i++) {
                 let val = $("input[name=c" + i + "]").val();
                 sudokuString += val == "" ? "0" : val;
@@ -17,7 +17,8 @@ function getSudoku() {
             break;
         case "text":
             sudokuString = $("input#import-text").val() == null ? "" : $("input#import-text").val();
-            for (let i = 0; i < ((sudokuSize ** 2) ** 2) - sudokuString.length; i++) {
+            let remaining = ((sudokuSize ** 2) ** 2) - sudokuString.length;
+            for (let i = 0; i < remaining; i++) {
                 sudokuString += "0";
             }
             break;
