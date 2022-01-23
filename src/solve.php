@@ -1,6 +1,8 @@
 <?php
 namespace j3ltr\SudokuSolver;
 
+use Exception;
+
 set_time_limit(0);
 
 require 'Sudoku.php';
