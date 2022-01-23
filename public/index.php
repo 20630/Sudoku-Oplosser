@@ -13,7 +13,15 @@
 
 <body>
 <div class="wrapper">
-    <header><h1>Sudoku oplosser</h1></header>
+    <header>
+        <h1>Sudoku oplosser</h1>
+        <nav>
+            <ul>
+                <li><a href="/src/sudokus.json" target="_blank">Opgeslagen sudoku's</a></li>
+                <li><a href="https://github.com/20630/Sudoku-Oplosser" target="_blank">Github</a></li>
+            </ul>
+        </nav>
+    </header>
     <div class="content">
         <div class="left">
             <table class="sudoku size-3">
@@ -155,10 +163,10 @@
                     </ul>
                 </div>
             </div>
-            <button class="solve" id="solve">Los op!</button>
+            <button class="cta-button" id="solve">Los op!</button>
         </div>
     </div>
 </div>
-<script src="assets/script.js"/>
+<script src="assets/script.js"></script>
 </body>
 </html>

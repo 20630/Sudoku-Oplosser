@@ -42,6 +42,7 @@ body::before {
 header {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     height: 7rem;
     margin-bottom: 3rem;
 }
@@ -55,12 +56,39 @@ header h1 {
     text-align: left;
 }
 
+nav {
+    display: flex;
+    align-items: center;
+}
+
+nav ul {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav li a {
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+nav li:not(:last-child) {
+    margin: 0 4rem 0 0;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
 .content {
     display: flex;
     background-color: #313632;
     width: 100%;
     height: calc(100% - 16rem);
-    box-shadow: 0px 0px 3rem .5rem rgba(0, 0, 0, .1);
+    box-shadow: 0 0 3rem .5rem rgba(0, 0, 0, .1);
 }
 
 .content .left {
@@ -80,6 +108,7 @@ table.sudoku {
     height: 100%;
     border-spacing: 0;
 }
+
 .sudoku td {
     width: calc(100% / 9);
     height: calc(100% / 9);
@@ -100,6 +129,7 @@ table.sudoku {
 .sudoku.size-3 td:nth-child(3n) {
     border-right: .2rem solid;
 }
+
 .sudoku.size-3 tr:nth-child(3n) td {
     border-bottom: .2rem solid;
 }
@@ -107,6 +137,7 @@ table.sudoku {
 .sudoku.size-2 td:nth-child(2n) {
     border-right: .2rem solid;
 }
+
 .sudoku.size-2 tr:nth-child(2n) td {
     border-bottom: .2rem solid;
 }
@@ -117,6 +148,23 @@ table.sudoku {
 
 .sudoku tr:last-child td {
     border-bottom: none !important;
+}
+
+.sudoku td input {
+    color: black;
+    border: none;
+    font-size: 1.3rem;
+    font-weight: bold;
+    padding: 0;
+    cursor: pointer;
+    outline: inherit;
+    width: 100%;
+    height: 100%;
+    -webkit-appearance: none;
+    margin: 0;
+    background: transparent;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
 }
 
 .content .right {
@@ -209,46 +257,6 @@ h2 {
     align-items: center;
 }
 
-#solve, #another-solve {
-    background: none;
-    color: white;
-    border: .25rem solid white;
-    font-size: 1.3rem;
-    font-weight: bold;
-    cursor: pointer;
-    outline: inherit;
-    padding: 1rem 2rem;
-    position: absolute;
-    bottom: 0;
-}
-
-#solve:hover, #another-solve:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-}
-
-td input {
-    color: black;
-    border: none;
-    font-size: 1.3rem;
-    font-weight: bold;
-    padding: 0;
-    cursor: pointer;
-    outline: inherit;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    -webkit-appearance: none;
-    margin: 0;
-    background: transparent;
-    text-align: center;
-    font-family: 'Poppins', sans-serif;
-}
-
-.row {
-    display: flex;
-    width: 100%;
-}
-
 .import-text-input input {
     margin: 1rem 1rem 0 0;
     color: white;
@@ -259,7 +267,7 @@ td input {
     height: 40px;
     padding: .8rem;
     -webkit-appearance: none;
-    background: #252826;;
+    background: #252826;
     font-family: 'Poppins', sans-serif;
 }
 
@@ -269,18 +277,41 @@ td input {
     opacity: 30%;
 }
 
-.solve-time {
+.description {
     display: flex;
     color: white;
+    margin-bottom: 2rem;
+    width: 30rem;
 }
 
-.solve-time i {
-    font-size: 3rem;
-    margin-right: 1rem;
-}
-
-.solve-time p {
-    font-weight: bold;
-    font-size: 1.5rem;
+.description p {
     margin: 0;
+}
+
+.description a {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    text-decoration: underline;
+    font-weight: bold;
+    margin-top: .3rem;
+    cursor: pointer;
+}
+
+.cta-button {
+    background: none;
+    color: white;
+    border: .25rem solid white;
+    font-size: 1.3rem;
+    font-weight: bold;
+    cursor: pointer;
+    outline: inherit;
+    padding: 1rem 2rem;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.cta-button:hover {
+    background-color: rgba(255, 255, 255, 0.05);
 }

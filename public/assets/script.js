@@ -83,19 +83,19 @@ function handleResponse(json) {
         let message;
         switch (json.success.code) {
             case "100":
-                message = "<div class=\"desc\"><p>Er is een oplossing gevonden voor deze sudoku!<br>Het algoritme heeft er <b>"
-                    + json.data.solveDuration + " ms</b> over gedaan.</p></div><div class=\"desc\">" +
+                message = "<div class=\"description\"><p>Er is een oplossing gevonden voor deze sudoku!<br>Het algoritme heeft er <b>"
+                    + json.data.solveDuration + " ms</b> over gedaan.</p></div><div class=\"description\">" +
                     "<p>Opgeloste sudokus worden opgeslagen zodat de oplossing de volgende keer sneller vekregen kan worden.<br>" +
                     "Deze sudoku is opgeslagen met id <b>" + json.data.id + "</b>.<br><a id=\"copy-id\">Kopieer id</a><br></p></div>";
                 break;
             case "101":
-                message = "<div class=\"desc\"><p>Er is een oplossing gevonden voor deze sudoku! Deze sudoku is al eerder een keer opgelost," +
-                    " dus heeft het algoritme hier geen werk gedaan.</p></div><div class=\"desc\"><p>Deze oplossing staat in de database met id <b>"
+                message = "<div class=\"description\"><p>Er is een oplossing gevonden voor deze sudoku! Deze sudoku is al eerder een keer opgelost," +
+                    " dus heeft het algoritme hier geen werk gedaan.</p></div><div class=\"description\"><p>Deze oplossing staat in de database met id <b>"
                     + json.data.id + "</b>.<br><a id=\"copy-id\">Kopieer id</a><br></p></div>";
                 break;
         }
 
-        $(".right").append(message + "<button class=\"solve\" id=\"another-solve\">Nog een sudoku oplossen!</button>");
+        $(".right").append(message + "<button class=\"cta-button\" id=\"another-solve\">Nog een sudoku oplossen!</button>");
 
         let grid = json.data.solvedSudoku.split("");
         if (getSudokuSize() == 2 && grid.length != 16) changeSudokuSize(3);
@@ -122,8 +122,8 @@ function handleResponse(json) {
                 message = "Er is een onbekende fout opgetreden:<br>\"" + json.error.message + "\"";
         }
 
-        $(".right").append("<div class=\"desc\"><p>" + message + "</p></div>" +
-            "<button class=\"solve\" id=\"another-solve\">Ga terug</button>");
+        $(".right").append("<div class=\"description\"><p>" + message + "</p></div>" +
+            "<button class=\"cta-button\" id=\"another-solve\">Ga terug</button>");
     }
 }
 
