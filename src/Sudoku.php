@@ -6,8 +6,10 @@ use InvalidArgumentException;
 use OutOfRangeException;
 
 class Sudoku {
-    protected array $grid;
-    protected int $size;
+    private array $grid;
+
+    //The size as in the width/height of one block (4x4: 2, 9x9: 3).
+    private int $size;
 
     public function __construct(array $grid, int $size) {
         if (count($grid) != $size ** 2) {
@@ -92,6 +94,7 @@ class Sudoku {
         $boxes = array();
         foreach ($this->getRows() as $y => $row) {
             foreach ($row as $x => $value) {
+                //I have to add 1 (and later subtract 1) to the $x and $y to prevent division by zero.
                 $a = (ceil(($y + 1) / $this->size) - 1) * $this->size;
                 $b = ceil(($x + 1) / $this->size) - 1;
                 $i = $a + $b;
@@ -113,14 +116,27 @@ class Sudoku {
         if ($x > $this->size ** 2 || $y > $this->size ** 2) {
             throw new OutOfRangeException('Cell (x = ' . $x . ', y = ' . $y . ') is out of range (' . $this->size ** 2 .')');
         }
+
+        $boxes = array();
+
         $a = (ceil(($y + 1) / $this->size) - 1) * $this->size;
         $b = ceil(($x + 1) / $this->size) - 1;
         $i = $a + $b;
 
-        return $this->getBox($i);
+        foreach ($this->getRows() as $yy => $row) {
+            foreach ($row as $xx => $value) {
+                $aa = (ceil(($yy + 1) / $this->size) - 1) * $this->size;
+                $bb = ceil(($xx + 1) / $this->size) - 1;
+                $ii = $aa + $bb;
+                if ($ii != $i) continue;
+                $boxes[] = $value;
+            }
+        }
+
+        return $boxes;
     }
 
-    public function getCell(int $x, int $y): int {
+    public function getCell(int $x, int $y) {
         return $this->grid[$y][$x];
     }
 

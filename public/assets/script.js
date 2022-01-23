@@ -86,12 +86,12 @@ function handleResponse(json) {
                 message = "<div class=\"description\"><p>Er is een oplossing gevonden voor deze sudoku!<br>Het algoritme heeft er <b>"
                     + json.data.solveDuration + " ms</b> over gedaan.</p></div><div class=\"description\">" +
                     "<p>Opgeloste sudokus worden opgeslagen zodat de oplossing de volgende keer sneller vekregen kan worden.<br>" +
-                    "Deze sudoku is opgeslagen met id <b>" + json.data.id + "</b>.<br><a id=\"copy-id\">Kopieer id</a><br></p></div>";
+                    "Deze sudoku is opgeslagen met ID <b>" + json.data.id + "</b>.<br><a id=\"copy-id\">Kopieer ID</a><br></p></div>";
                 break;
             case "101":
                 message = "<div class=\"description\"><p>Er is een oplossing gevonden voor deze sudoku! Deze sudoku is al eerder een keer opgelost," +
-                    " dus heeft het algoritme hier geen werk gedaan.</p></div><div class=\"description\"><p>Deze oplossing staat in de database met id <b>"
-                    + json.data.id + "</b>.<br><a id=\"copy-id\">Kopieer id</a><br></p></div>";
+                    " dus heeft het algoritme hier geen werk gedaan.</p></div><div class=\"description\"><p>Deze oplossing staat in de database met ID <b>"
+                    + json.data.id + "</b>.<br><a id=\"copy-id\">Kopieer ID</a><br></p></div>";
                 break;
         }
 
@@ -113,7 +113,7 @@ function handleResponse(json) {
                 message = "Er is geen sudoku gevonden met het ingevulde id!";
                 break;
             case "Parameter 'id' must be a number.":
-                message = "Het ingevulde id moet een nummer zijn!";
+                message = "De ingevulde id moet een nummer zijn!";
                 break;
             case "Parameter 'grid' is invalid.":
                 message = "De ingevulde sudoku is niet geldig!";
@@ -206,5 +206,5 @@ const copyIdButton = "#copy-id";
 let sudokuId;
 $(document).on("click", copyIdButton, function() {
     navigator.clipboard.writeText(sudokuId);
-    $("#copy-id").text("Id gekopieerd!");
+    $("#copy-id").text("ID gekopieerd!");
 });

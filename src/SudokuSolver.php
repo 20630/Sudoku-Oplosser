@@ -11,10 +11,9 @@ class SudokuType {
 }
 
 class SudokuSolver {
-    protected Sudoku $sudoku;
-    protected int $sudokuType;
-    protected int $solveDuration;
-    protected int $solveSteps;
+    private Sudoku $sudoku;
+    private int $sudokuType;
+    private int $solveDuration;
 
     public function __construct(Sudoku $sudoku) {
         $this->sudoku = $sudoku;
@@ -37,14 +36,6 @@ class SudokuSolver {
         return $this->solveDuration;
     }
 
-    public function getSolveSteps(): int {
-        if ($this->sudokuType != SudokuType::SOLVED) {
-            throw new RuntimeException("Sudoku is not solved!");
-        }
-
-        return $this->solveSteps;
-    }
-
     public function solve(): self {
         if ($this->hasDuplicates()) {
             $this->sudokuType = SudokuType::UNSOLVABLE;
@@ -54,7 +45,6 @@ class SudokuSolver {
         if ($this->isSolved()) {
             $this->sudokuType = SudokuType::SOLVED;
             $this->solveDuration = 0;
-            $this->solveSteps = 0;
             return $this;
         }
 
@@ -66,37 +56,41 @@ class SudokuSolver {
         $this->prepare();
 
         while ($this->sudokuType == SudokuType::IN_SOLVE) {
-            $startBacktracking = true;
+            //The basic algorithm begins here.
+            //The algorithm will, for each cell, eliminate all possible values that are already in its row, column or box.
+
+            $isDoneEliminating = true;
             foreach ($this->sudoku->getRows() as $y => $row) {
                 foreach ($row as $x => $cell) {
                     if (!is_array($cell)) continue;
-                    //Only compares to numbers (not possible numbers, which are arrays).
+
+                    //Only compare to numbers (not possible numbers, which are arrays).
                     $row = array_filter($row, 'is_int');
                     $column = array_filter($this->sudoku->getColumn($x), 'is_int');
                     $box = array_filter($this->sudoku->getBoxFromCell($x, $y), 'is_int');
 
-                    //Compares the cell (all possible values) to all the values of the row, column and box that the cell is in,
-                    //and removes any duplicates from the possibilities.
-                    $diff = array_diff($cell, $row, $column, $box);
+                    $diff = array_values(array_diff($cell, $row, $column, $box));
 
+                    //Possible values were removed.
                     if (count($cell) != count($diff)) {
-                        $startBacktracking = false;
-
-                        if (count($diff) == 1) $diff = array_values($diff)[0];
+                        //One cell is solved.
+                        if (count($diff) == 1) {
+                            $diff = $diff[0];
+                            //Because a cell is solved, each cell can eliminate this value, thus it has to check all cells again.
+                            $isDoneEliminating = false;
+                        }
                         $this->sudoku->setCell($x, $y, $diff);
                     }
                 }
             }
 
-            $this->solveSteps++;
-
             if ($this->isSolved()) {
                 $this->sudokuType = SudokuType::SOLVED;
+                $solveTimeFinished = hrtime(true);
+                $this->solveDuration = ($solveTimeFinished - $solveTimeStarted) / 1e+6;
             }
 
-            if ($startBacktracking) {
-                $this->sudokuType = SudokuType::UNSOLVABLE;
-                $this->solveSteps = 0;
+            if ($isDoneEliminating) {
                 $this->backTrack(0, 0);
             }
         }
@@ -109,9 +103,12 @@ class SudokuSolver {
     }
 
     private function backTrack($previousX, $previousY): void {
+        //This is the bruteforce algorithm.
+        //It will try every possible value cell after cell.
+
         if ($this->sudokuType == SudokuType::SOLVED) return;
 
-        //Get the next value
+        //Getting the next empty cell.
         $nextX = -1;
         $nextY = -1;
         $nextValue = array();
@@ -122,22 +119,22 @@ class SudokuSolver {
                 if (!is_array($cell)) continue;
                 $nextX = $x;
                 $nextY = $y;
-                $nextValue = array_values($cell);
+                $nextValue = $cell;
                 break 2;
             }
             $previousX = 0;
         }
 
-        //solved, right?
+        //There is no next number, which means the algorithm is at the end of the sudoku.
+        //This also means the sudoku is solved, because the algorithm will only get to this point if all previous cells are valid.
         if ($nextX == -1 && $nextY == -1) {
             $this->sudokuType = SudokuType::SOLVED;
             return;
         }
 
+        //Getting the next possible value for this cell.
         for ($i = 0; $i < count($nextValue); $i++) {
             $value = $nextValue[$i];
-
-
             //Not doing this in one if-statement because if the value is in the row it doesn't have to filter the other ones.
             $row =  array_filter($this->sudoku->getRow($nextY), 'is_int');
             if (in_array($value, $row)) continue;
@@ -152,6 +149,7 @@ class SudokuSolver {
 
             if ($this->sudokuType == SudokuType::SOLVED) return;
         }
+
         $this->sudoku->setCell($nextX, $nextY, $nextValue);
     }
 
@@ -164,14 +162,14 @@ class SudokuSolver {
         }
 
         foreach ($this->sudoku->getColumns() as $column) {
-            $column = array_diff($column, array(0)); //Only filled cells are taken into account.
+            $column = array_diff($column, array(0));
             if (count(array_unique($column)) != count($column)) {
                 return true;
             }
         }
 
         foreach ($this->sudoku->getBoxes() as $box) {
-            $box = array_diff($box, array(0)); //Only filled cells are taken into account.
+            $box = array_diff($box, array(0));
             if (count(array_unique($box)) != count($box)) {
                 return true;
             }
@@ -190,7 +188,6 @@ class SudokuSolver {
                 }
             }
         }
-
     }
 
     private function isSolved(): bool {
