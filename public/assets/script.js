@@ -149,11 +149,11 @@ $(document).on("change", importInput, function() {
             break;
         case "id":
             $(".import-option").append("<div class=\"import-text-input\"><input class=\"input\" type=\"text\" id=\"import-id\"" +
-                "placeholder=\"ID\"/><a>Een sudoku ID</a></div>");
+                "placeholder=\"ID\"/></div>");
             break;
         case "text":
             $(".import-option").append("<div class=\"import-text-input\"><input class=\"input\" type=\"text\" id=\"import-text\"" +
-                "placeholder=\"Tekst\"/><a>Sudoku cijfers achter elkaar geschreven met als lege vakjes een 0</a></div>");
+                "placeholder=\"Tekst\"/></div>");
             break;
     }
 });

@@ -150,15 +150,15 @@
                     <ul class="option-choices">
                         <li>
                             <input class="input" type="radio" id="fill-in" name="import" checked/>
-                            <label for="fill-in">Invullen</label>
+                            <label title="Vul de sudoku zelf in" for="fill-in">Invullen</label>
                         </li>
                         <li>
                             <input type="radio" id="id" name="import"/>
-                            <label for="id">ID</label>
+                            <label title="Haal een sudoku op uit de opgeslagen sudoku's" for="id">ID</label>
                         </li>
                         <li>
                             <input type="radio" id="text" name="import"/>
-                            <label for="text">Tekst</label>
+                            <label title="De uitgeschreven tekst van de sudoku met als lege vakjes een 0" for="text">Tekst</label>
                         </li>
                     </ul>
                 </div>
