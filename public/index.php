@@ -157,8 +157,8 @@
                             <label title="Haal een sudoku op uit de opgeslagen sudoku's" for="id">ID</label>
                         </li>
                         <li>
-                            <input type="radio" id="text" name="import"/>
-                            <label title="De uitgeschreven tekst van de sudoku met als lege vakjes een 0" for="text">Tekst</label>
+                            <input type="radio" id="seed" name="import"/>
+                            <label title="De uitgeschreven tekst van de sudoku met als lege vakjes een 0" for="seed">Seed</label>
                         </li>
                     </ul>
                 </div>
