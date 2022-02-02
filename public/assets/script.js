@@ -14,8 +14,8 @@ function getSudoku() {
         case "id":
             sudokuString = $("input#import-id").val() == null ? "" : $("input#import-id").val();
             break;
-        case "text":
-            sudokuString = $("input#import-text").val() == null ? "" : $("input#import-text").val();
+        case "seed":
+            sudokuString = $("input#import-seed").val() == null ? "" : $("input#import-seed").val();
             let remaining = ((getSudokuSize() ** 2) ** 2) - sudokuString.length;
             for (let i = 0; i < remaining; i++) {
                 sudokuString += "0";
@@ -95,7 +95,7 @@ function handleResponse(json) {
                 break;
         }
 
-        $(".right").append(message + "<button class=\"cta-button\" id=\"another-solve\">Nog een sudoku oplossen!</button>");
+        $(".right").append("<div class=\"descriptions\">" + message + "</div><button class=\"cta-button\" id=\"another-solve\">Nog een sudoku oplossen!</button>");
 
         let grid = json.data.solvedSudoku.split("");
         if (getSudokuSize() == 2 && grid.length != 16) changeSudokuSize(3);
@@ -122,7 +122,7 @@ function handleResponse(json) {
                 message = "Er is een onbekende fout opgetreden:<br>\"" + json.error.message + "\"";
         }
 
-        $(".right").append("<div class=\"description\"><p>" + message + "</p></div>" +
+        $(".right").append("<div class=\"descriptions\"><div class=\"description\"><p>" + message + "</p></div></div>" +
             "<button class=\"cta-button\" id=\"another-solve\">Ga terug</button>");
     }
 }
@@ -151,9 +151,9 @@ $(document).on("change", importInput, function() {
             $(".import-option").append("<div class=\"import-text-input\"><input class=\"input\" type=\"text\" id=\"import-id\"" +
                 "placeholder=\"ID\"/></div>");
             break;
-        case "text":
-            $(".import-option").append("<div class=\"import-text-input\"><input class=\"input\" type=\"text\" id=\"import-text\"" +
-                "placeholder=\"Tekst\"/></div>");
+        case "seed":
+            $(".import-option").append("<div class=\"import-text-input\"><input class=\"input\" type=\"text\" id=\"import-seed\"" +
+                "placeholder=\"Seed\"/></div>");
             break;
     }
 });
